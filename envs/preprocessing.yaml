@@ -1,0 +1,10 @@
+channels:
+ - bioconda
+ - conda-forge
+dependencies:
+ - bamtools
+ - bbmap
+ - blast
+ - fastp
+ - fastqc
+ - samtools
