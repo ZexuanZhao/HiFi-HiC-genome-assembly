@@ -21,7 +21,8 @@ rule fastp_hic:
     input:
         config["hiC_read1"],
         config["hiC_read2"]
-    threads: config["threads"]
+    threads:
+        min(config["threads"],16)
     output:
         expand(os.path.join(out_dir, "trimmed_reads", "{hic_reads_prefix}.clean.fastq.gz"), hic_reads_prefix = hic_reads_prefixs)
     shell:

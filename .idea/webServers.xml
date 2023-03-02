@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="2cbe1d5d-3617-41f5-ab12-3ce1a51c5022" name="kremer_assembly">
+        <fileTransfer rootFolder="/home/zexuanzhao/projects/LotmariaGenomeAssembly" accessType="SFTP" host="kremer.umd.edu" port="22" sshConfigId="e8e8cbdf-0538-413b-aeb1-d953b2a80dd6" sshConfig="zexuanzhao@kremer.umd.edu:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
