@@ -65,7 +65,7 @@ rule conbine_and_filter_bams:
         mapq_filter=config["mapq_filter"]
     shell:
         """
-        two_read_bam_combiner.pl {input.bams} samtools {params.mapq_filter} | \
+        perl two_read_bam_combiner.pl {input.bams} samtools {params.mapq_filter} | \
             samtools view -bS -@ {threads} -t {input.fai} - | \
             samtools sort -@ {threads} -o {output}
         """
