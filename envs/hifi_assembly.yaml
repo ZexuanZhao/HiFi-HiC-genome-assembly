@@ -1,3 +1,4 @@
+name: hifi_assembly
 channels:
  - bioconda
  - conda-forge
