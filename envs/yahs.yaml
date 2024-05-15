@@ -1,3 +1,4 @@
+name: yahs
 channels:
  - bioconda
  - conda-forge
