@@ -45,7 +45,7 @@ rule filter5end:
     shell:
         """
         samtools view -h -@ {threads} {input} | \
-            filter_five_end.pl | \
+            perl filter_five_end.pl | \
             samtools view -Sb -@ {threads} - \
             > {output}
         """
