@@ -8,4 +8,4 @@ If they are not removed, they will be shown as overrepresented sequences in `fas
 along with telomeric repeats and other common repeats.
 
 # To run
-`snakemake --cores [cpu] --use-conda`
+`snakemake --cores --cores all --use-conda`
