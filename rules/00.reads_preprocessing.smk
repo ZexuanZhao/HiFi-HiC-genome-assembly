@@ -75,7 +75,7 @@ rule hifiAdapterFilt:
     output:
         os.path.join(out_dir,"trimmed_reads", "{}.filt.fastq.gz".format(hifi_prefix))
     threads:
-        config["threads"]
+        min(config["threads"],16)
     params:
         mem = config["mem"],
         outdir=os.path.join(out_dir,"trimmed_reads")
