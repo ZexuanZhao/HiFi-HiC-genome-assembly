@@ -81,7 +81,7 @@ rule hifiAdapterFilt:
         outdir=os.path.join(out_dir,"trimmed_reads")
     shell:
         """
-        bash hifiadapterfilt_modified.sh \
+        hifiadapterfilt_modified.sh \
             -b {input.bam} \
             -d {input.db} \
             -t {threads} \
