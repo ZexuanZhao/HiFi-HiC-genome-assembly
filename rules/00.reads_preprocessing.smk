@@ -22,7 +22,7 @@ rule fastp_hic:
         config["hiC_read1"],
         config["hiC_read2"]
     threads:
-        min(config["threads"],16)
+        min(threads, 16)
     output:
         expand(os.path.join(out_dir, "trimmed_reads", "{hic_reads_prefix}.clean.fastq.gz"), hic_reads_prefix = hic_reads_prefixs)
     shell:
@@ -55,7 +55,7 @@ rule fastqc_hifi_before_trimming:
     conda:
         os.path.join(workflow.basedir,"envs/preprocessing.yaml")
     input:
-        config["hifi_reads"]
+        threads
     output:
         os.path.join(out_dir, "qc", "fastqc", "{}_fastqc.html".format(hifi_prefix))
     threads: 2
@@ -75,7 +75,7 @@ rule hifiAdapterFilt:
     output:
         os.path.join(out_dir,"trimmed_reads", "{}.filt.fastq.gz".format(hifi_prefix))
     threads:
-        min(config["threads"],16)
+        min(threads, 16)
     params:
         mem = config["mem"],
         outdir=os.path.join(out_dir,"trimmed_reads")
