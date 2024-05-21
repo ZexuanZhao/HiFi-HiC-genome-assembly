@@ -45,7 +45,7 @@ rule filter5end:
     shell:
         """
         samtools view -h -@ {threads} {input} | \
-            perl filter_five_end.pl | \
+            filter_five_end.pl | \
             samtools view -Sb -@ {threads} - \
             > {output}
         """
@@ -65,7 +65,7 @@ rule conbine_and_filter_bams:
         mapq_filter=config["mapq_filter"]
     shell:
         """
-        perl two_read_bam_combiner.pl {input.bams} samtools {params.mapq_filter} | \
+        two_read_bam_combiner.pl {input.bams} samtools {params.mapq_filter} | \
             samtools view -bS -@ {threads} -t {input.fai} - | \
             samtools sort -@ {threads} -o {output}
         """
