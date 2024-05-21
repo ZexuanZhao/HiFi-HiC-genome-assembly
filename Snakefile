@@ -20,7 +20,7 @@ for filename in os.listdir("./scripts"):
     f = os.path.join("./scripts", filename)
     # checking if it is a file
     if os.path.isfile(f):
-        make_executable(filename)
+        make_executable(f)
 
 # Get parameters
 hifi_prefix = os.path.basename(config["hifi_reads"]).replace(".bam", "")
