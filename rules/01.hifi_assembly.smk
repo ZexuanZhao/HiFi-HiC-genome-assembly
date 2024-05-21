@@ -27,6 +27,8 @@ rule gfa2fasta:
         os.path.join(out_dir, "assembly", "hifi", "hifi_assembly.hic.{type}.gfa")
     output:
         os.path.join(out_dir, "assembly", "hifi", "hifi_assembly.hic.{type}.fasta")
+    threads:
+        1
     shell:
         """
         awk '/^S/{{print ">"$2;print $3}}' {input} > {output}
@@ -37,6 +39,8 @@ rule hifi_assembly_stats:
         os.path.join(out_dir, "assembly", "hifi", "hifi_assembly.hic.{type}.fasta")
     output:
         os.path.join(out_dir, "qc", "hifi_stat", "hifi_assembly.hic.{type}.stat")
+    threads:
+        1
     shell:
         """
         sequence-stats.sh -a {input} > {output}
