@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 
 # Get config file
 configfile: "config.yaml"
@@ -8,6 +8,19 @@ configfile: "config.yaml"
 # Dependencies
 os.environ['PATH'] += ':' + os.path.abspath("./scripts")
 os.environ['PATH'] += ':' + os.path.abspath("./bin")
+
+## Make all scripts executable
+
+def make_executable(path):
+    mode = os.stat(path).st_mode
+    mode |= (mode & 0o444) >> 2    # copy R bits to X
+    os.chmod(path, mode)
+
+for filename in os.listdir("./scripts"):
+    f = os.path.join(directory, filename)
+    # checking if it is a file
+    if os.path.isfile(f):
+        make_executable(filename)
 
 # Get parameters
 hifi_prefix = os.path.basename(config["hifi_reads"]).replace(".bam", "")
