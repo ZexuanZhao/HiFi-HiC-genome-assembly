@@ -8,7 +8,7 @@ hifi_adapter_db: "db/hifi_adapter_db/"
 
 # Dependencies (path to the git cloned directory which will be added to path)
 sequence-stats: "bin/sequence-stats"
-juicer_tools_jar: "bin/juicer_tools_1.22.01.jar"
+juicer_tools_jar: "bin/juicer_tools.1.9.9_jcuda.0.8.jar"
 
 # Parameters
 mapq_filter: 10

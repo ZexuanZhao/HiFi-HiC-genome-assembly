@@ -58,4 +58,6 @@ rule all:
         # HiFi Assembly
         expand(os.path.join(out_dir,"qc","hifi_stat","hifi_assembly.hic.{type}.stat"), type = types),
         # Hi-C Assembly
-        expand(os.path.join(out_dir, "assembly", "hic_contact_map", "{type}_scaffolds_final.hic"), type = types)
+        expand(os.path.join(out_dir, "assembly", "hic_hifi", "{type}_scaffolds_final.fa"), type = types),
+        expand(os.path.join(out_dir, "assembly", "hic_contact_map", "{type}.hic"), type = types)
+

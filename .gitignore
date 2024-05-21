@@ -6,6 +6,9 @@
 # Snakemake
 .snakemake/
 
+# Test output directory
+out/
+
 ## --------------Python----------------
 # Byte-compiled / optimized / DLL files
 __pycache__/
