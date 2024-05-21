@@ -9,6 +9,9 @@
 # Test output directory
 out/
 
+# IDE
+.idea/
+
 ## --------------Python----------------
 # Byte-compiled / optimized / DLL files
 __pycache__/
