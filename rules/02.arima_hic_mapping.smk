@@ -6,6 +6,8 @@ rule index_assembly:
     output:
         os.path.join(out_dir,"assembly","hifi","hifi_assembly.hic.{type}.fasta.bwt"),
         os.path.join(out_dir,"assembly","hifi","hifi_assembly.hic.{type}.fasta.fai")
+    threads:
+        1
     shell:
         """
         bwa index {input}
@@ -41,7 +43,7 @@ rule filter5end:
     output:
         os.path.join(out_dir,"hic_mapping", "{type}_{hic_reads_prefix}.mapped.5endFiltered.bam")
     threads:
-        threads
+        5
     shell:
         """
         samtools view -h -@ {threads} {input} | \
@@ -60,7 +62,7 @@ rule conbine_and_filter_bams:
     output:
          os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.bam")
     threads:
-        threads
+        5
     params:
         mapq_filter=config["mapq_filter"]
     shell:
@@ -80,6 +82,8 @@ rule mark_duplicate:
         bam = os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.purged.bam")
     params:
         mem = config["mem"]
+    threads:
+        2
     shell:
         """
         picard MarkDuplicates \
@@ -100,7 +104,7 @@ rule sort_by_name_bam:
     output:
          os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.purged.sorted.bam")
     threads:
-        threads
+        min(threads, 16)
     shell:
         """
         samtools sort -@ {threads} -o {output} -n {input}
