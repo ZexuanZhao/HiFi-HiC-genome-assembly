@@ -55,7 +55,7 @@ rule fastqc_hifi_before_trimming:
     conda:
         os.path.join(workflow.basedir,"envs/preprocessing.yaml")
     input:
-        threads
+        config["hifi_reads"]
     output:
         os.path.join(out_dir, "qc", "fastqc", "{}_fastqc.html".format(hifi_prefix))
     threads: 2
