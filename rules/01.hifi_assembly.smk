@@ -39,5 +39,5 @@ rule hifi_assembly_stats:
         os.path.join(out_dir, "qc", "hifi_stat", "hifi_assembly.hic.{type}.stat")
     shell:
         """
-        bash sequence-stats -a {input} > {output}
+        sequence-stats.sh -a {input} > {output}
         """
