@@ -17,7 +17,7 @@ def make_executable(path):
     os.chmod(path, mode)
 
 for filename in os.listdir("./scripts"):
-    f = os.path.join(directory, filename)
+    f = os.path.join("./scripts", filename)
     # checking if it is a file
     if os.path.isfile(f):
         make_executable(filename)
