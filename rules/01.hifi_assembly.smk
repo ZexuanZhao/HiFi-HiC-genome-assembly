@@ -10,6 +10,8 @@ rule hifiasm:
             type = types)
     threads:
         threads
+    log:
+        os.path.join(out_dir, "log", "{}.asm.log".format(hifi_prefix))
     params:
         out_dir = os.path.join(out_dir, "assembly", "hifi")
     shell:
@@ -19,7 +21,8 @@ rule hifiasm:
 	        -t {threads} \
 	        --h1 {input[0]} \
 	        --h2 {input[1]} \
-	        {input.hifi}
+	        {input.hifi} \
+	        2>{log}
         """
 
 rule gfa2fasta:

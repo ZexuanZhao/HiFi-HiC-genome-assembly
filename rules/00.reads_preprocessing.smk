@@ -25,13 +25,16 @@ rule fastp_hic:
         min(threads, 16)
     output:
         expand(os.path.join(out_dir, "trimmed_reads", "{hic_reads_prefix}.clean.fastq.gz"), hic_reads_prefix = hic_reads_prefixs)
+    log:
+        expand(os.path.join(out_dir, "log", "{hic_reads_prefix}.fastp.log"), hic_reads_prefix = hic_reads_prefixs)
     shell:
         """
         fastp \
             -i {input[0]} -I {input[1]} \
             -o {output[0]} -O {output[1]} \
             --thread {threads} \
-            -j /dev/null -h /dev/null
+            -j /dev/null -h /dev/null \
+            2>{log}
         """
 
 rule fastqc_hic_after_trimming:
@@ -79,6 +82,8 @@ rule hifiAdapterFilt:
     params:
         mem = config["mem"],
         outdir=os.path.join(out_dir,"trimmed_reads")
+    log:
+        os.path.join(out_dir, "log", "{}.filt.log".format(hifi_prefix))
     shell:
         """
         hifiadapterfilt_modified.sh \
@@ -86,7 +91,8 @@ rule hifiAdapterFilt:
             -d {input.db} \
             -t {threads} \
             -o {params.outdir} \
-            -M {params.mem}
+            -M {params.mem} \
+            2>{log}
         """
 
 rule fastqc_hifi_after_trimming:

@@ -8,10 +8,12 @@ rule index_assembly:
         os.path.join(out_dir,"assembly","hifi","hifi_assembly.hic.{type}.fasta.fai")
     threads:
         1
+    log:
+        os.path.join(out_dir, "log", "{type}.index.log")
     shell:
         """
-        bwa index {input}
-        samtools faidx {input}
+        bwa index {input} 2>{log}
+        samtools faidx {input} 2>{log}
         """
 
 rule hic_mapping:
@@ -23,6 +25,8 @@ rule hic_mapping:
         reads = os.path.join(out_dir,"trimmed_reads", "{hic_reads_prefix}.clean.fastq.gz")
     output:
         os.path.join(out_dir,"hic_mapping", "{type}_{hic_reads_prefix}.mapped.bam")
+    log:
+        os.path.join(out_dir, "log", "{type}_{hic_reads_prefix}.mapping.log")
     threads:
         threads
     shell:
@@ -30,9 +34,9 @@ rule hic_mapping:
         bwa mem \
             -t {threads}\
             {input.assembly} \
-            {input.reads}| \
+            {input.reads} 2>{log} | \
             samtools view -@ {threads} -Sb - \
-            > {output}
+            > {output} 2>{log}
         """
 
 rule filter5end:
@@ -44,12 +48,14 @@ rule filter5end:
         os.path.join(out_dir,"hic_mapping", "{type}_{hic_reads_prefix}.mapped.5endFiltered.bam")
     threads:
         5
+    log:
+        os.path.join(out_dir, "log", "{type}_{hic_reads_prefix}.filter5end.log")
     shell:
         """
         samtools view -h -@ {threads} {input} | \
             filter_five_end.pl | \
             samtools view -Sb -@ {threads} - \
-            > {output}
+            > {output} 2>{log}
         """
 
 rule conbine_and_filter_bams:
@@ -65,11 +71,14 @@ rule conbine_and_filter_bams:
         5
     params:
         mapq_filter=config["mapq_filter"]
+    log:
+        os.path.join(out_dir, "log", "{type}.conbine_and_filter_bams.log")
     shell:
         """
         two_read_bam_combiner.pl {input.bams} samtools {params.mapq_filter} | \
             samtools view -bS -@ {threads} -t {input.fai} - | \
-            samtools sort -@ {threads} -o {output}
+            samtools sort -@ {threads} -o {output} \
+            2>{log}
         """
 
 rule mark_duplicate:
@@ -84,6 +93,8 @@ rule mark_duplicate:
         mem = config["mem"]
     threads:
         2
+    log:
+        os.path.join(out_dir, "log", "{type}.mark_duplicate.log")
     shell:
         """
         picard MarkDuplicates \
@@ -93,7 +104,8 @@ rule mark_duplicate:
             METRICS_FILE={output.metric} \
             ASSUME_SORTED=TRUE \
             VALIDATION_STRINGENCY=LENIENT\
-            REMOVE_DUPLICATES=TRUE
+            REMOVE_DUPLICATES=TRUE \
+            2>{log}
         """
 
 rule sort_by_name_bam:
@@ -105,7 +117,9 @@ rule sort_by_name_bam:
          os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.purged.sorted.bam")
     threads:
         min(threads, 16)
+    log:
+        os.path.join(out_dir, "log", "{type}.sort_by_name_bam.log")
     shell:
         """
-        samtools sort -@ {threads} -o {output} -n {input}
+        samtools sort -@ {threads} -o {output} -n {input} 2>{log}
         """
