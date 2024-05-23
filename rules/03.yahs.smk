@@ -60,5 +60,5 @@ rule contact_matrix:
         juicer_tools_jar = config["juicer_tools_jar"]
     shell:
         """
-        (java -jar -Xmx{params.mem} {params.juicer_tools_jar} pre -r 1000 {input.txt} {params.temp_file} 1>{log} 2>{log} <(cat {input.log} | grep PRE_C_SIZE | awk '{{print $2" "$3}}')) && (mv {params.temp_file} {output})
+        (java -jar -Xmx{params.mem} {params.juicer_tools_jar} pre {input.txt} {params.temp_file} 1>{log} 2>{log} <(cat {input.log} | grep PRE_C_SIZE | awk '{{print $2" "$3}}')) && (mv {params.temp_file} {output})
         """
