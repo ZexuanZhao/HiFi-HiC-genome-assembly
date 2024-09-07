@@ -3,4 +3,4 @@
 
 # To run
 Modify the `config.yaml` and then run:
-`snakemake --cores --cores all --use-conda`
+`snakemake --cores all --use-conda`
