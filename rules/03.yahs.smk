@@ -17,7 +17,6 @@ rule yahs:
     shell:
         """
         yahs \
-            --no-contig-ec \
             --no-mem-check \
             -o {params.prefix} \
             {input.assembly} {input.bam} \
