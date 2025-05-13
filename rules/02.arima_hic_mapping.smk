@@ -81,11 +81,35 @@ rule conbine_and_filter_bams:
             2>{log}
         """
 
+rule add_readGroup:
+    conda:
+        os.path.join(workflow.basedir, "envs/arima_hic_mapping.yaml")
+    input:
+        os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.bam")
+    output:
+        os.path.join(out_dir, "hic_mapping", "{type}.combined.filtered.addRG.bam")
+    threads:
+        1
+    log:
+        os.path.join(out_dir, "log", "addRG.log")
+    shell:
+         """
+          picard AddOrReplaceReadGroups \
+          I={input} \
+          O={output} \
+          RGID=1 \
+          RGLB=lib1 \
+          RGPL=ILLUMINA \
+          RGPU=unit1 \
+          RGSM=HiC \
+          2>{log}
+         """
+
 rule mark_duplicate:
     conda:
         os.path.join(workflow.basedir,"envs/arima_hic_mapping.yaml")
     input:
-        os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.bam")
+        os.path.join(out_dir, "hic_mapping", "{type}.combined.filtered.addRG.bam")
     output:
         metric = os.path.join(out_dir,"qc", "{type}_markDuplicate.metric.txt"),
         bam = os.path.join(out_dir,"hic_mapping", "{type}.combined.filtered.purged.bam")
