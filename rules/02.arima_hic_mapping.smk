@@ -91,7 +91,7 @@ rule add_readGroup:
     threads:
         1
     log:
-        os.path.join(out_dir, "log", "addRG.log")
+        os.path.join(out_dir, "log", "{type}.addRG.log")
     shell:
          """
           picard AddOrReplaceReadGroups \
